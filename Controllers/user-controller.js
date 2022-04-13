@@ -88,7 +88,7 @@ const Login = async (req, res) => {
        const token = jwt.sign({ _id: user._id}, process.env.JWT_SECRET)
        console.log("CONNECTEDDD ");
 
-        res.json( user )
+        res.json( {token,user} )
     } catch (error) {
 
         res.status(500).send('Server error' + error);
