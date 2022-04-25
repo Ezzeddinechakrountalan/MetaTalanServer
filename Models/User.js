@@ -31,7 +31,25 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
 
+    },    sexe: {
+
+        type: String,
+
+        required: true,
+
+
+
+    }, test_avatar: {
+
+        type: String,
+
+        required: false,
+
+
+
     },
+
+
 
 },
 { versionKey: false }
