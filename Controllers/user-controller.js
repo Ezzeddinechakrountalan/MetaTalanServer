@@ -80,7 +80,7 @@ const Login = async (req, res) => {
         if (!isMatch) {
             errorUser.email="password is wrong";
             //return res.status(400).json({ msg: 'invalid password' })
-            return res.json(error&User);
+            return res.json(errorUser);
            
         }
 
@@ -88,7 +88,7 @@ const Login = async (req, res) => {
        const token = jwt.sign({ _id: user._id}, process.env.JWT_SECRET)
        console.log("CONNECTEDDD ");
 
-        res.json( {token,user} )
+        res.json( user )
     } catch (error) {
 
         res.status(500).send('Server error' + error);
