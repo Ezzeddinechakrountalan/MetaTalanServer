@@ -7,6 +7,8 @@ const User = require('../Models/User');
 
 const Register = async (req, res) => {
     const { firstName, lastName, avatarURL,networkID,email, password, role} = req.body;
+    
+    
     try {
         let user = await User.findOne({ email })
         if (user) {
@@ -15,6 +17,9 @@ const Register = async (req, res) => {
         user = new User({
             firstName, lastName, avatarURL,networkID,email, password, role
         })
+
+
+
         //encrypt password
         const salt = await bcrypt.genSalt(10); //generate salt contains 10
         //save password
@@ -26,8 +31,7 @@ const Register = async (req, res) => {
     } catch (error) {
 
         res.status(500).send('Server error');
-
-    }
+        }
 }
 
 const NewAdmin = async (req, res) => {
@@ -59,10 +63,6 @@ const NewAdmin = async (req, res) => {
 const Login = async (req, res) => {
     const  email = req.body.email;
     const password=req.body.password;
-    //console.dir(req.body);
-  
-
-
     try {
         //find user
         let user = await User.findOne({ email });
@@ -86,16 +86,35 @@ const Login = async (req, res) => {
 
        // const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET)
        const token = jwt.sign({ _id: user._id}, process.env.JWT_SECRET)
+       
        console.log("CONNECTEDDD ");
 
         res.json( user )
+        user.isConnected=true;
+       await user.save();
     } catch (error) {
 
         res.status(500).send('Server error' + error);
     }
 
 }
+const Logout = async (req, res) => {
+    const  email = req.body.email;
+    try {
+        //find user
+        let user = await User.findOne({ email });
+       
+        user.isConnected= false;
+        await user.save();
+       console.log("DISCONNECTED ");
 
+       return res.status(200).json({ msg: 'DISCONNECTED' })
+    } catch (error) {
+
+        res.status(500).send('Server error' + error);
+    }
+
+}
 const getAll = async (req, res) => {
     User.find()
         .then(users => {
@@ -131,7 +150,7 @@ const setAvatarUrl = async (req, res) =>{
     const update = { avatarURL: newURLavatar };
 
     try {
-        //find user
+        //find  user  
         let user = await User.findOne({ email });
 
         //if user not found
@@ -164,6 +183,33 @@ const updateUser = async (req,res)=>{
 }
 
 }
+                 //user can add friends 
+const addFriend = async (req,res)=>{
+    const emailUserConnected = req.body.emailUserConnected;
+    const emailUserToAdd = req.body.emailuserToAdd;
+
+
+    try {
+        let userContected = await User.findOne({ emailUserConnected });
+        let userToAdd = await User.findOne({ emailUserToAdd });
+
+    if(!userContected || !userToAdd)
+    {
+        return res.status(400).json({ msg: 'invalid email' })
+    }
+    const filter ={User :userContected};
+    const update={$push: {'User.$.friends':userToAdd}};
+    await User.updateOne(filter,update);
+
+       
+        await userContected.save();
+        res.json(userContected);
+    } catch (error) {
+    
+        res.status(500).send('Server error' + error);
+    }
+ 
+}
 module.exports = {
     Register,
     Login,
@@ -171,21 +217,9 @@ module.exports = {
     NewAdmin,
     updateUser,
     getAvatarUrl,
-    setAvatarUrl
+    setAvatarUrl,
+    addFriend,
+    Logout
+  
+
 }
-/*
-
-  let user = await User.findOne({ email });
-    if (!user) {
-        return res.status(400).json({ msg: 'invalid email' })
-    }
-
- User.find({email})
- .then(user => {
-     res.json({ user })
- })
- .catch(err => {
-     console.log(err);
- })
-
- */

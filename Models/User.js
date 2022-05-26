@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema.Types;
 
 const UserSchema = new mongoose.Schema({
     firstName: {
@@ -31,28 +32,28 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
 
-    },    sexe: {
-
+    },
+    sexe: {
         type: String,
-
         required: true,
 
-
-
-    }, test_avatar: {
-
+    },
+    RoleStream: {
         type: String,
-
         required: false,
 
-
+    },
+    isConnected: {
+        type: Boolean,
+        required: false,
 
     },
 
-
-
+   
 },
-{ versionKey: false }
+{ 
+    versionKey: false
+}
 
 )
 module.exports = User = mongoose.model('users', UserSchema);

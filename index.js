@@ -16,6 +16,7 @@ app.use(morgan('dev'))
 app.use(cors())
 
 app.use('/api', require('./Routes/index-routes'));
+
 app.get('/', (req, res) => {
     res.send('app running successfully');
 });
