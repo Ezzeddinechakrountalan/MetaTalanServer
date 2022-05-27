@@ -30,7 +30,7 @@ const Register = async (req, res) => {
         res.status(201).json({ msg: "user created successfully" })
     } catch (error) {
 
-        res.status(500).send('Server error');
+        res.status(501).send('Server error');
         }
 }
 
@@ -55,7 +55,7 @@ const NewAdmin = async (req, res) => {
         res.status(201).json({ msg: "admin created successfully" })
     } catch (error) {
         console.log(err.message)
-        res.status(500).send('Server error');
+        res.status(501).send('Server error');
 
     }
 }
@@ -94,7 +94,7 @@ const Login = async (req, res) => {
        await user.save();
     } catch (error) {
 
-        res.status(500).send('Server error' + error);
+        res.status(501).send('Server error' + error);
     }
 
 }
@@ -111,7 +111,7 @@ const Logout = async (req, res) => {
        return res.status(200).json({ msg: 'DISCONNECTED' })
     } catch (error) {
 
-        res.status(500).send('Server error' + error);
+        res.status(501).send('Server error' + error);
     }
 
 }
@@ -139,7 +139,7 @@ const getAvatarUrl = async (req, res) =>{
         res.json({  URLavatar })
     } catch (error) {
 
-        res.status(500).send('Server error' + error);
+        res.status(501).send('Server error' + error);
     }
 
 }
@@ -164,7 +164,7 @@ const setAvatarUrl = async (req, res) =>{
         res.json(user)
     } catch (error) {
 
-        res.status(500).send('error');
+        res.status(501).send('error');
     }
 
 }
@@ -179,7 +179,7 @@ const updateUser = async (req,res)=>{
     res.json({title :' done',user})
 } catch (error) {
 
-    res.status(500).send('Server error' + error);
+    res.status(501).send('Server error' + error);
 }
 
 }
@@ -206,7 +206,7 @@ const addFriend = async (req,res)=>{
         res.json(userContected);
     } catch (error) {
     
-        res.status(500).send('Server error' + error);
+        res.status(501).send('Server error' + error);
     }
  
 }
